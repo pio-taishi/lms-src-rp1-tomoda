@@ -1,6 +1,7 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,35 +74,42 @@ public class StudentAttendanceService {
 		return attendanceManagementDtoList;
 	}
 
-	//5/18　追加　Task25　↓
-
+	//Task25　5/19追加　↓
 	/**
-	 * 勤怠過去日の未入力チェック
+	 * 過去日の未入力チェック
 	 *
-	 * @param attendanceManagementDtoList
-	 * @return true: 未入力あり
+	 * @return true:未入力あり
+	 *         false:未入力なし
 	 */
-	public Boolean hasPastEmptyAttendance(
-			List<AttendanceManagementDto> attendanceManagementDtoList) {
+	public Boolean notEnterCheck()
+			throws ParseException {
 
-		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
+		// 日付フォーマット設定（時刻切り捨て）
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				"yyyy-MM-dd");
 
-			if (!dto.getIsToday()
-					&& dto.getTrainingDate().before(new Date())
-					&&
-					(dto.getTrainingStartTime() == null
-							|| dto.getTrainingStartTime().isEmpty()
-							|| dto.getTrainingEndTime() == null
-							|| dto.getTrainingEndTime().isEmpty())) {
+		// 現在日付取得
+		Date currentDate = sdf.parse(
+				sdf.format(
+						new Date()));
 
-				return true;
-			}
-		}
+		// 過去日の未入力件数取得
+		Integer count = tStudentAttendanceMapper
+				.notEnterCount(
 
-		return false;
+						loginUserDto.getCourseId(),
+
+						loginUserDto.getLmsUserId(),
+
+						currentDate,
+
+						Constants.DB_FLG_FALSE);
+
+		// 未入力が1件以上ならtrue
+		return count > 0;
 	}
 
-	//5/18　追加　Task25　↑
+	//Task25　5/19追加　↑
 
 	/**
 	 * 出退勤更新前のチェック
