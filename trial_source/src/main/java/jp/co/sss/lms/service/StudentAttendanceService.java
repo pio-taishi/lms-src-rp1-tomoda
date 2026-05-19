@@ -73,6 +73,36 @@ public class StudentAttendanceService {
 		return attendanceManagementDtoList;
 	}
 
+	//5/18　追加　Task25　↓
+
+	/**
+	 * 勤怠過去日の未入力チェック
+	 *
+	 * @param attendanceManagementDtoList
+	 * @return true: 未入力あり
+	 */
+	public Boolean hasPastEmptyAttendance(
+			List<AttendanceManagementDto> attendanceManagementDtoList) {
+
+		for (AttendanceManagementDto dto : attendanceManagementDtoList) {
+
+			if (!dto.getIsToday()
+					&& dto.getTrainingDate().before(new Date())
+					&&
+					(dto.getTrainingStartTime() == null
+							|| dto.getTrainingStartTime().isEmpty()
+							|| dto.getTrainingEndTime() == null
+							|| dto.getTrainingEndTime().isEmpty())) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	//5/18　追加　Task25　↑
+
 	/**
 	 * 出退勤更新前のチェック
 	 * 
@@ -333,5 +363,4 @@ public class StudentAttendanceService {
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
 	}
-
 }
