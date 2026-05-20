@@ -74,12 +74,16 @@ public class StudentAttendanceService {
 		return attendanceManagementDtoList;
 	}
 
-	//Task25　5/19追加　↓
+	//Task25　友田：5/19追加　　↓
 	/**
 	 * 過去日の未入力チェック
+	 * 
+	 * @author 友田
 	 *
 	 * @return true:未入力あり
 	 *         false:未入力なし
+	 *         
+	 * @throws ParseException
 	 */
 	public Boolean notEnterCheck()
 			throws ParseException {
@@ -89,21 +93,18 @@ public class StudentAttendanceService {
 				"yyyy-MM-dd");
 
 		// 現在日付取得
-		Date currentDate = sdf.parse(
+		Date trainingDate = sdf.parse(
 				sdf.format(
 						new Date()));
 
 		// 過去日の未入力件数取得
-		Integer count = tStudentAttendanceMapper
-				.notEnterCount(
+		Integer count = tStudentAttendanceMapper.notEnterCount(
 
-						loginUserDto.getCourseId(),
+				loginUserDto.getLmsUserId(),
 
-						loginUserDto.getLmsUserId(),
+				Constants.DB_FLG_FALSE,
 
-						currentDate,
-
-						Constants.DB_FLG_FALSE);
+				trainingDate);
 
 		// 未入力が1件以上ならtrue
 		return count > 0;

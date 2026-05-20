@@ -104,30 +104,44 @@
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
 
-	<!-- Task25　5/19追加　↓ -->
-	
+	<!-- Task25 友田　5/19追加　↓ -->
+
 	<select id="notEnterCount" resultType="java.lang.Integer">
 
 		SELECT COUNT(*)
 
-		FROM m_section s
+		FROM
+		t_student_attendance
 
-		LEFT OUTER JOIN t_student_attendance t
-		ON t.lms_user_id = #{lmsUserId}
+		WHERE lms_user_id
+		= #{lmsUserId}
 
-		AND CAST(s.date AS DATE)
-		= CAST(t.training_date AS DATE)
+		AND delete_flg
+		=
+		#{deleteFlg}
 
-		WHERE s.course_id = #{courseId}
+		AND CAST(training_date AS DATE)
+		&lt; CAST(#{trainingDate}
+		AS DATE)
 
-		AND CAST(s.date AS DATE)
-		&lt; CAST(#{currentDate} AS DATE)
+		AND status != 1
 
 		AND (
-		t.training_start_time IS NULL
-		OR t.training_start_time = ''
-		OR t.training_end_time IS NULL
-		OR t.training_end_time = ''
+
+		training_start_time = ''
+
+		OR
+
+		training_end_time = ''
+
+		OR
+
+		training_start_time IS NULL
+
+		OR
+
+		training_end_time IS NULL
+
 		)
 
 	</select>

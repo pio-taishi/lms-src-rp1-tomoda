@@ -65,24 +65,24 @@ public interface TStudentAttendanceMapper {
 	 */
 	Boolean update(TStudentAttendance tStudentAttendance);
 
-	//Task25追加　5/19　↓
+	//Task25追加 友田　5/19　↓
 
 	/**
 	 * 過去日の未入力件数取得
 	 *
-	 * @param courseId コースID
+	 *@author 友田　Task.25
+	 *
 	 * @param lmsUserId LMSユーザーID
-	 * @param currentDate 現在日付
 	 * @param deleteFlg 削除フラグ
+	 * @param trainingDate 日付
 	 * @return 過去日の未入力件数
 	 */
 	Integer notEnterCount(
-			@Param("courseId") Integer courseId,
 
 			@Param("lmsUserId") Integer lmsUserId,
 
-			@Param("currentDate") Date currentDate,
+			@Param("deleteFlg") Short deleteFlg,
 
-			@Param("deleteFlg") Short deleteFlg);
+			@Param("trainingDate") Date trainingDate);
 
 }

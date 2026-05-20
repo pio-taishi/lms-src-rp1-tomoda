@@ -46,7 +46,7 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 
-		//Task25　5/19追加　↓
+		//Task25　友田　5/19追加　↓
 		// 過去日の未入力有無を取得
 		Boolean hasPastEmpty = studentAttendanceService
 				.notEnterCheck();
